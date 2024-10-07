@@ -41,13 +41,13 @@ const Write = () => {
             title,
             desc: value,
             cat,
-            img: file ? imgUrl : "",
+            img: imgUrl,
           })
         : await axios.post(`/posts/`, {
             title,
             desc: value,
             cat,
-            img: file ? imgUrl : "",
+            img: imgUrl,
             date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
           });
           navigate("/")
@@ -83,20 +83,35 @@ const Write = () => {
           <span>
             <b>Visibility: </b> Public
           </span> */}
-          <input
+
+<input
             style={{ display: "none" }}
             type="file"
             id="file"
             name=""
-            onChange={(e) => {setFile(e.target.files[0]);
-              document.getElementById("file-label").textContent = e.target.files[0]?.name || "Upload Image";}
-            }
+            onChange={(e) => {
+              setFile(e.target.files[0]); // Set the new image file
+              document.getElementById("file-label").textContent =
+                e.target.files[0]?.name || "Upload Image"; // Change label
+            }}
           />
           <label className="file" htmlFor="file" id="file-label">
-          {file ? file.name : "Upload Image"}
+            {file
+              ? file.name // Show the name of the selected file
+              : originalImage
+              ? "Change Image" // Show "Change Image" if there is an original image
+              : "Upload Image"} 
           </label>
+
+          {/* Image Preview */}
+          {originalImage && !file && (
+            <img
+              src={`/uploads/${originalImage}`} // Assuming the images are served from /uploads
+              alt="Selected"
+              style={{ width: "100px", height: "100px", marginTop: "10px" }}
+            />
+          )}
           <div className="buttons">
-            {/* <button>Save as a draft</button> */}
             <button onClick={handleClick}>Publish</button>
           </div>
         </div>
