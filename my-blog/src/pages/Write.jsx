@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
@@ -10,10 +10,24 @@ const Write = () => {
   const [title, setTitle] = useState(state?.title || "");
   const [value, setValue] = useState(state?.desc || "");
   const [file, setFile] = useState(null);
-  const [cat, setCat] = useState(state?.cat || "");
+  const [cat, setCat] = useState(state?.category || "");
   const originalImage = state?.img || "";
 
   const navigate = useNavigate()
+
+  const handleEdit = () => {
+    if (state) {
+      console.log(state.category); // Just an example log
+      // Any other logic you want to run when editing a post
+    } else {
+      console.log("Creating a new post");
+    }
+  };
+
+  // Use useEffect to trigger the function when the component is rendered
+  useEffect(() => {
+    handleEdit(); // Call the function here
+  }, []); 
 
   const upload = async () => {
     try {
